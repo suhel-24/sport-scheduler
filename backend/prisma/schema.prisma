@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model sports {
+  sportid    Int     @id @default(autoincrement())
+  sname      String? @unique(map: "name_unique") @db.VarChar(255)
+  sdesc      String?
+  maxplayers Int?
+  created_by Int?
+  users      users?  @relation(fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id        Int      @id @default(autoincrement())
+  username       String   @unique @db.VarChar(50)
+  password       String   @db.VarChar(255)
+  email          String   @unique @db.VarChar(255)
+  hashedpassword String?  @db.VarChar(255)
+  role           String?  @db.VarChar(255)
+  sports         sports[]
+}

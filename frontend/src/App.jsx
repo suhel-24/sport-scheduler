@@ -1,8 +1,10 @@
 
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Dashboard from './components/Dashboard';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import CreareSport from './components/CreareSport';
+import CreateGame from './components/CreateGame';
 
 
 function App() {
@@ -12,6 +14,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Dashboard />} />
+        <Route path="/createsport" element={<CreareSport />} />
+        <Route path="/creategame" element={<CreateGame />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,11 +16,13 @@ const Login = () => {
       console.log(response.data);
 
       // Save the response data in local storage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("username", response.data.username);
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("user_id", response.data.user_id);
-      localStorage.setItem("role", response.data.role);
+      const { token, ...userData } = response.data;
+
+      // Store the token separately as instructed
+      localStorage.setItem("token", token);
+      
+      // Convert the rest of the user data into a JSON string and store it in a single item
+      localStorage.setItem("userData", JSON.stringify(userData));
 
       // Redirect to home
       navigate("/");
