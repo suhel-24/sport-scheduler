@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import CreareSport from './components/CreareSport';
 import CreateGame from './components/CreateGame';
+import EditSport from './components/EditSport';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/createsport" element={<CreareSport />} />
         <Route path="/creategame" element={<CreateGame />} />
+        <Route path="/editSport" element={<EditSport />} />
       </Routes>
     </Router>
   );

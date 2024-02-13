@@ -65,4 +65,29 @@ const deleteSport=async(req,res)=>{
     res.status(500).json({message:'Error deleting sport'});
   }
 }
-module.exports = { createSport, getSport,deleteSport };
+
+const editSport=async(req,res)=>{
+  const sportid = req.query.sportid;
+  const {Sname,Sdesc,maxPlayers}=req.body;
+  if(!sportid || !Sname || !Sdesc || !maxPlayers){
+    return res.status(400).json({message:'Sport ID, Name, Description, and Max Players are required'});
+  }
+  try{
+    const updatedSport=await prisma.sports.update({
+      where:{
+        sportid:parseInt(sportid),
+      },
+      data:{
+        sname:Sname,
+        sdesc:Sdesc,
+        maxplayers:maxPlayers,
+      }
+    });
+    res.status(200).json(updatedSport);
+  }catch(error){
+    console.error('Error updating sport:',error);
+    res.status(500).json({message:'Error updating sport'});
+  }
+
+}
+module.exports = { createSport, getSport,deleteSport,editSport };

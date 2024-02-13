@@ -6,6 +6,7 @@ const Sportscard = () => {
   const [userData, setUserData] = useState([]); 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      const token = localStorage.getItem("token");
       const userDataString = localStorage.getItem("userData");
       if (!userDataString) {
         console.error("No user data found in localStorage");
@@ -17,7 +18,11 @@ const Sportscard = () => {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:3000/admin?userid=${localUserData.user_id}`);
+        const response = await axios.get(`http://localhost:3000/admin?userid=${localUserData.user_id}`,{
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);

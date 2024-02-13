@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
 
 const SportCard = ({ sport, deleteSport }) => {
+  const navigate = useNavigate();
+  const handleEdit = (data) => {
+    navigate("/editSport", { state: { ...data } });
+  };
   return (
     <div className="w-1/2 p-4">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -17,9 +22,14 @@ const SportCard = ({ sport, deleteSport }) => {
             <span className="font-semibold">Created By:</span> {sport.created_by}
           </p>
         </div>
-        <button onClick={() => deleteSport(sport.sportid)} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Delete Sport
-        </button>
+        <div className="flex justify-between items-center mt-6">
+          <button onClick={() => deleteSport(sport.sportid)} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Delete Sport
+          </button>
+          <button onClick={() => handleEdit(sport)} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            edit Sport
+          </button>
+        </div>
       </div>
     </div>
   );
