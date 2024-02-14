@@ -9,5 +9,5 @@ const {createSport, getSport,deleteSport,editSport}=require('../controller/admin
 router.post("/createSport",protect,createSport)
 router.get("/",protect,getSport)
 router.post("/deleteSport",protect,deleteSport)
-router.post("/editSport",editSport)
+router.post("/editSport",protect,editSport)
 module.exports = router;

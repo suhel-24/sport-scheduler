@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +13,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = { username, email, password, role };
+    const formData = { username, email, password, role ,admincode};
     if (role == "admin" && admincode != "secretkey") {
       alert("Invalid Admin Code");
       return;
@@ -19,9 +21,11 @@ function Signup() {
     try {
       // Adjust the URL to your backend endpoint
       const response = await axios.post("http://localhost:3000/signup", formData);
-      console.log(response.data);
-      console.log("hello");
       // Handle response or redirect here
+      if (response){
+        navigate("/");
+      }
+
     } catch (error) {
       console.error("Signup error", error.response);
       // Handle error here

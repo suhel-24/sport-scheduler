@@ -17,8 +17,10 @@ const getusersdata=async (req, res) => {
 
 const addUser=async (req, res) => {
     try {
-      const { username, password, email, role } = req.body;
-  
+      const { username, password, email, role,admincode } = req.body;
+      if (role == "admin" && admincode!="secretkey") {
+        return res.status(400).send("Invalid Admin Code");
+      }
       if (!username || !password || !email || !role) {
         return res.status(400).send("Username, password, and email are required");
       }

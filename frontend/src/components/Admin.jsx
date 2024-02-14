@@ -3,7 +3,7 @@ import axios from "axios";
 import SportCard from "../cards/Sportscard";
 import { Link } from "react-router-dom";
 const Sportscard = () => {
-  const [userData, setUserData] = useState([]); 
+  const [userData, setUserData] = useState([]);
   useEffect(() => {
     const fetchDashboardData = async () => {
       const token = localStorage.getItem("token");
@@ -18,7 +18,7 @@ const Sportscard = () => {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:3000/admin?userid=${localUserData.user_id}`,{
+        const response = await axios.get(`http://localhost:3000/admin?userid=${localUserData.user_id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -30,14 +30,20 @@ const Sportscard = () => {
     };
     fetchDashboardData();
   }, []);
-    const deleteSport=async(sportid)=>{
-      try {
-        const response = await axios.post(`http://localhost:3000/admin/deleteSport?sportid=${sportid}`);
-        setUserData(userData => userData.filter(sport => sport.sportid !== response.data.sportid));
-      } catch (error) {
-        console.error("Error deleting sport data:", error);
-      }
+  const deleteSport = async (sportid) => {
+    const token = localStorage.getItem("token");
+   
+    try {
+      const response = await axios.post(`http://localhost:3000/admin/deleteSport?sportid=${sportid}`,{}, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      setUserData((userData) => userData.filter((sport) => sport.sportid !== response.data.sportid));
+    } catch (error) {
+      console.error("Error deleting sport data:", error);
     }
+  };
   return (
     <>
       <div className="border-gray-300 border-2">
@@ -50,7 +56,7 @@ const Sportscard = () => {
         </div>
         <div className="flex flex-wrap ">
           {userData.map((sport) => (
-            <SportCard key={sport.sportid} sport={sport} deleteSport={deleteSport}/>
+            <SportCard key={sport.sportid} sport={sport} handleDelete={deleteSport} />
           ))}
         </div>
       </div>
