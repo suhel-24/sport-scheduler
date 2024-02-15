@@ -19,7 +19,7 @@ const addUser=async (req, res) => {
     try {
       const { username, password, email, role,admincode } = req.body;
       if (role == "admin" && admincode!="secretkey") {
-        return res.status(400).send("Invalid Admin Code");
+        return res.status(400).json({msg:"Invalid Admin Code"});
       }
       if (!username || !password || !email || !role) {
         return res.status(400).send("Username, password, and email are required");
@@ -42,10 +42,10 @@ const addUser=async (req, res) => {
     } catch (err) {
       if (err.code === "P2002") {
         // unique_violation
-        return res.status(409).send("Username or email already exists");
+        return res.status(409).json({msg:"Username or email already exists"});
       }
       console.error(err);
-      res.status(500).send("Server error");
+      res.status(500).json({msg:" sigin Server error"});
     }
   }  
 

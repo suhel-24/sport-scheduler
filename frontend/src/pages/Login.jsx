@@ -1,11 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -28,13 +28,21 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error("Login error", error.response);
-      // Handle error here
+      const message = error.response && error.response.data ? error.response.data.msg : 'An unknown error occurred';
+      setErrorMessage(message);
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
   return (
     <>
-      <Navbar />
+    <div className="relative">
+    {errorMessage && (
+        <div className="bg-red-500 text-white py-2 px-4 rounded absolute top-4 right-4">
+          {errorMessage}
+        </div>
+      )}
+    </div>
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
         <div className="flex flex-col space-y-2">
           <label className="font-semibold">Email:</label>

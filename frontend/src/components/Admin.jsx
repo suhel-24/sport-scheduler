@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SportCard from "../cards/Sportscard";
 import { Link } from "react-router-dom";
+import Games from "./Games";
 const Sportscard = () => {
-  const [userData, setUserData] = useState([]);
+  const [sportData, setSportData] = useState([]);
   useEffect(() => {
     const fetchDashboardData = async () => {
       const token = localStorage.getItem("token");
@@ -13,17 +14,13 @@ const Sportscard = () => {
         return;
       }
       const localUserData = JSON.parse(userDataString);
-      if (!localUserData || !localUserData.user_id) {
-        console.error("No user ID found in parsed user data");
-        return;
-      }
       try {
         const response = await axios.get(`http://localhost:3000/admin?userid=${localUserData.user_id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
         });
-        setUserData(response.data);
+        setSportData(response.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -39,7 +36,7 @@ const Sportscard = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      setUserData((userData) => userData.filter((sport) => sport.sportid !== response.data.sportid));
+      setSportData((sportData) => sportData.filter((sport) => sport.sportid !== response.data.sportid));
     } catch (error) {
       console.error("Error deleting sport data:", error);
     }
@@ -55,11 +52,12 @@ const Sportscard = () => {
           </Link>
         </div>
         <div className="flex flex-wrap ">
-          {userData.map((sport) => (
+          {sportData.map((sport) => (
             <SportCard key={sport.sportid} sport={sport} handleDelete={deleteSport} />
           ))}
         </div>
       </div>
+      <Games />
     </>
   );
 };

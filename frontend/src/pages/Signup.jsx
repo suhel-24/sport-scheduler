@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -9,7 +8,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [admincode, setadmincode] = useState("");
-  const [role, setRole] = useState("user"); // default role
+  const [role, setRole] = useState("user");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,13 +28,21 @@ function Signup() {
 
     } catch (error) {
       console.error("Signup error", error.response);
-      // Handle error here
+      const message = error.response && error.response.data ? error.response.data.msg : 'An unknown error occurred';
+      setErrorMessage(message);
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
   return (
     <>
-      <Navbar />
+    <div className="relative">
+    {errorMessage && (
+        <div className="bg-red-500 text-white py-2 px-4 rounded absolute top-4 right-4">
+          {errorMessage}
+        </div>
+      )}
+    </div>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label className="inline-flex items-center">
