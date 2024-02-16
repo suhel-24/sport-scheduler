@@ -119,4 +119,84 @@ const editGame=async(req,res)=>{
   }
 }
 
-module.exports = { createGame ,deleteGame ,getGames,getSports,editGame};
+const joinGame = async (req, res) => {
+  const {userId, gameId,teamName} = req.body;
+  if (!userId || !gameId || !teamName) {
+      return res.status(400).json({ message: 'User ID,teamName and Game ID are required' });
+  }
+  try {
+      const game = await prisma.games.findUnique({
+        where: {
+          gameId: parseInt(gameId),
+        },
+      });
+      if (!game) {
+        return res.status(404).json({ message: 'Game not found' });
+      }
+      if (game.isCompleted) {
+        return res.status(400).json({ message: 'Game is already completed' });
+      }
+      // const usersForGame = await prisma.gamePlayer.count({
+      //   where: {
+      //     gameId: gameId,
+      //   },
+      //   distinct: ['userId']
+      // });
+      // if (usersForGame >= game.maxGPlayers) {
+      //   return res.status(400).json({ message: 'Game is already full' });
+      // } 
+      const userGame = await prisma.gamePlayers.create({
+        data: {
+          player_id: parseInt(userId),
+          GameId: parseInt(gameId),
+          teamName,
+        },
+      });
+      res.status(201).json(userGame);
+    } catch (error) {
+      console.error('Error joining game:', error);
+      if (error.code==='P2002'){
+        res.status(500).json({ message: 'Already joined the game' });
+      }
+      res.status(500).json({ message: 'Error joining game' });
+    }
+}
+
+const joinedGames = async (req, res) => {
+  const userId = req.query.userId;
+  if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+  }
+  try {
+      const games = await prisma.gamePlayers.findMany({
+        where: {
+          player_id: parseInt(userId),
+        },
+        include: {
+          game:true
+        },
+      });
+      console.log(games);
+      // Check if games exist for the user
+      if (games.length > 0) {
+        // Customize the response to include sports name and other relevant details
+        const customizedGames = games.map(game => ({
+          gameId: game.gameId,
+          sportName: game.game.sportId, // Accessing the sname from the included sport record
+          date: game.game.date,
+          startTime: game.game.startTime,
+          venue: game.game.venue,
+          maxGPlayers: game.game.maxGPlayers,
+          isCompleted: game.game.isCompleted,
+        }));
+        res.status(200).json(customizedGames);
+      } else {
+        res.status(404).json({ message: 'No games found for this user' });
+      }
+    } catch (error) {
+      console.error('Error fetching games:', error);
+      res.status(500).json({ message: 'Error fetching games' });
+    }
+}
+
+module.exports = { createGame ,deleteGame ,getGames,getSports,editGame,joinGame,joinedGames};

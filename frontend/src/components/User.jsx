@@ -1,8 +1,12 @@
+import Games from "./Games"
 
 
 const User = () => {
   return (
-    <div>User</div>
+    <>
+      <h1>User</h1>
+      <Games />
+    </>
   )
 }
 

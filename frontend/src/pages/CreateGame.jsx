@@ -7,12 +7,12 @@ const CreateGame = () => {
   const location = useLocation();
   const data = location.state 
 
-  const [date, setDate] = useState(data.date || null);
-  const [startTime, setStartTime] = useState(data.startTime || null);
-  const [venue, setVenue] = useState(data.venue || null);
-  const [maxGPlayers, setMaxGPlayers] = useState(data.maxGPlayers || null);
-  const [sports, setSports] = useState(data.sports || []);
-  const [sportId, setSportId] = useState(data.sportId || "");
+  const [date, setDate] = useState(data?.date || "");
+  const [startTime, setStartTime] = useState(data?.startTime || "");
+  const [venue, setVenue] = useState(data?.venue || "");
+  const [maxGPlayers, setMaxGPlayers] = useState(data?.maxGPlayers || "");
+  const [sports, setSports] = useState(data?.sports || []);
+  const [sportId, setSportId] = useState(data?.sportId || "");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const CreateGame = () => {
         });
       }
 
-      
+      +
       alert("Successfully created!");
       navigate("/");
     } catch (error) {

@@ -27,6 +27,7 @@ model users {
   role           String?  @db.VarChar(255)
   sports         sports[]
   createdGames   games[]  @relation("game_creator")
+  gamesplayed    gamePlayers[]
 }
 
 model games {
@@ -40,5 +41,18 @@ model games {
   maxGPlayers  Int
   sport       sports    @relation(fields: [sportId], references: [sportid], onDelete: Cascade)
   creator     users     @relation(fields: [createdBy], references: [user_id], onDelete: Cascade, name: "game_creator")
+  players     gamePlayers[]
 }
 
+model gamePlayers {
+  GameId   Int     @id
+  player_id  Int     
+  teamName String? @db.VarChar(255)
+  game     games   @relation(fields: [GameId], references: [gameId], onDelete: Cascade)
+  user     users   @relation(fields: [player_id], references: [user_id], onDelete: Cascade)
+
+  @@unique([GameId, player_id], name: "game_user_unique")
+}
+
+
+//The @@unique attribute ensures that the combination of GameId and user_id is unique
