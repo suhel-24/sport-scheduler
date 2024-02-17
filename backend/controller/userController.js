@@ -182,7 +182,7 @@ const joinedGames = async (req, res) => {
         // Customize the response to include sports name and other relevant details
         const customizedGames = games.map(game => ({
           gameId: game.gameId,
-          sportName: game.game.sportId, // Accessing the sname from the included sport record
+          sportid: game.game.sportId, // Accessing the sname from the included sport record
           date: game.game.date,
           startTime: game.game.startTime,
           venue: game.game.venue,
@@ -199,4 +199,27 @@ const joinedGames = async (req, res) => {
     }
 }
 
-module.exports = { createGame ,deleteGame ,getGames,getSports,editGame,joinGame,joinedGames};
+const getAllGames = async (req, res) => {
+  try {
+      const games = await prisma.games.findMany({
+        include: {
+          sport:true
+        },
+      });
+      const customizedGames = games.map(game => ({
+        gameId: game.gameId,
+        sportName: game.sport.sname, // Accessing the sname from the included sport record
+        date: game.date,
+        startTime: game.startTime,
+        venue: game.venue,
+        maxGPlayers: game.maxGPlayers,
+        isCompleted: game.isCompleted,
+      }));
+      res.status(200).json(customizedGames);
+    } catch (error) {
+      console.error('Error fetching all games:', error);
+      res.status(500).json({ message: 'Error fetching all games' });
+    }
+}
+
+module.exports = { createGame ,deleteGame ,getGames,getSports,editGame,joinGame,joinedGames,getAllGames};
