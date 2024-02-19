@@ -13,6 +13,7 @@ const CreateGame = () => {
   const [maxGPlayers, setMaxGPlayers] = useState(data?.maxGPlayers || "");
   const [sports, setSports] = useState(data?.sports || []);
   const [sportId, setSportId] = useState(data?.sportId || "");
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,12 +65,21 @@ const CreateGame = () => {
       navigate("/");
     } catch (error) {
       console.error("Login error", error.response);
-      alert("Error creating game! Please try again later.");
+      const message = error.response && error.response.data ? error.response.data.msg : 'An unknown error occurred';
+      setErrorMessage(message);
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
   return (
     <>
+    <div className="relative">
+    {errorMessage && (
+        <div className="bg-red-500 text-white py-2 px-4 rounded absolute top-4 right-4">
+          {errorMessage}
+        </div>
+      )}
+    </div>
       <div className="container mx-auto p-4">
         <h2 className="text-lg font-semibold mb-4">{data ? 'Edit Game' : 'Create Game'}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">

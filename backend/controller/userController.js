@@ -20,7 +20,7 @@ const createGame = async (req, res) => {
         res.status(201).json(newSession);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Server error");
+        res.status(500).json({message:'Error creating game'});
     }
 }
 const deleteGame = async (req, res) => {
@@ -37,7 +37,7 @@ const deleteGame = async (req, res) => {
         res.status(201).json(deletedGame);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Server error");
+        res.status(500).json({message:'Error deleting game'});
     }
 }
 
@@ -149,16 +149,18 @@ const joinGame = async (req, res) => {
         data: {
           player_id: parseInt(userId),
           GameId: parseInt(gameId),
-          teamName,
-        },
+          teamName, 
+        }, 
       });
       res.status(201).json(userGame);
     } catch (error) {
       console.error('Error joining game:', error);
       if (error.code==='P2002'){
-        res.status(500).json({ message: 'Already joined the game' });
+        res.status(400).json({ message: 'Already joined the game' });
       }
+      else{
       res.status(500).json({ message: 'Error joining game' });
+      }
     }
 }
 
