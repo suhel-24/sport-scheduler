@@ -178,12 +178,18 @@ const joinedGames = async (req, res) => {
           game:true
         },
       });
-      console.log(games);
+      const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
       // Check if games exist for the user
       if (games.length > 0) {
         // Customize the response to include sports name and other relevant details
         const customizedGames = games.map(game => ({
           gameId: game.gameId,
+          teamName:game.teamName,
           sportid: game.game.sportId, // Accessing the sname from the included sport record
           date: game.game.date,
           startTime: game.game.startTime,

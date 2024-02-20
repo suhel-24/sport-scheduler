@@ -17,6 +17,7 @@ const JoinedGames = () => {
             authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data);
         setallGames(response.data);
       } catch (error) {
         console.error("Error fetching games", error);

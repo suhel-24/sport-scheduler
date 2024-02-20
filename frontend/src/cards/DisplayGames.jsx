@@ -24,24 +24,32 @@ const DisplayGames = (game, handleJoin) => {
               <span className="font-semibold">Start time&ensp;:</span> {gameData.game.startTime}
             </p>
           </div>
-          <div className="mt-4">
-            <span className="font-semibold">Select Team:</span>
-            <div className="mt-2">
-              <label className="inline-flex items-center">
-                <input type="radio" name="teamSelection" value="team1" onChange={(e) => handleTeamSelection(e.target.value)} className="form-radio" />
-                <span className="ml-2">Team 1</span>
-              </label>
-              <label className="inline-flex items-center ml-6">
-                <input type="radio" name="teamSelection" value="team2" onChange={(e) => handleTeamSelection(e.target.value)} className="form-radio" />
-                <span className="ml-2">Team 2</span>
-              </label>
-            </div>
+          {!gameData.game.teamName ? ( 
+            <>
+              <div className="mt-4">
+                <span className="font-semibold">Select Team:</span>
+                <div className="mt-2">
+                  <label className="inline-flex items-center">
+                    <input type="radio" name="teamSelection" value="team1" onChange={(e) => handleTeamSelection(e.target.value)} className="form-radio" />
+                    <span className="ml-2">Team 1</span>
+                  </label>
+                  <label className="inline-flex items-center ml-6">
+                    <input type="radio" name="teamSelection" value="team2" onChange={(e) => handleTeamSelection(e.target.value)} className="form-radio" />
+                    <span className="ml-2">Team 2</span>
+                  </label>
+                </div>
+              </div>
+              <div className="flex justify-between items-center mt-6">
+                <button onClick={() => handleJoin({...gameData, teamName: teamSelection})} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  Join Game
+                </button>
+              </div>
+            </>
+          ):(
+          <div>
+            Team:{gameData.game.teamName}
           </div>
-          <div className="flex justify-between items-center mt-6">
-            <button onClick={() => gameData.handleJoin({...gameData.game,teamName:teamSelection})} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              join Game
-            </button>
-          </div>
+          )}
         </div>
       </div>
     </>
