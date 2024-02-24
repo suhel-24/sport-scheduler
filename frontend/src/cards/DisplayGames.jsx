@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 
-const DisplayGames = (game, handleJoin) => {
+const DisplayGames = ({game, handleJoin}) => {
   const [gameData, setGame] = useState(game);
   const [teamSelection, setTeamSelection] = useState('');
   const handleTeamSelection = (value) => {
@@ -11,20 +12,20 @@ const DisplayGames = (game, handleJoin) => {
     <>
       <div className="w-1/2 p-4">
         <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-bold">Sport name: {gameData.game.sportName}</h2>
+          <h2 className="text-xl font-bold">Sport name: {gameData.sportName}</h2>
           <p className="text-gray-600 mt-2">
             <b>venue&emsp;&ensp;:&ensp;</b>
-            {gameData.game.venue}
+            {gameData.venue}
           </p>
           <div className="mt-4">
             <p>
-              <span className="font-semibold">Date:</span> {gameData.game.date}
+              <span className="font-semibold">Date:</span> {gameData.date}
             </p>
             <p>
-              <span className="font-semibold">Start time&ensp;:</span> {gameData.game.startTime}
+              <span className="font-semibold">Start time&ensp;:</span> {gameData.startTime}
             </p>
           </div>
-          {!gameData.game.teamName ? ( 
+          {!gameData.teamName ? ( 
             <>
               <div className="mt-4">
                 <span className="font-semibold">Select Team:</span>
@@ -47,7 +48,7 @@ const DisplayGames = (game, handleJoin) => {
             </>
           ):(
           <div>
-            Team:{gameData.game.teamName}
+            Team:{gameData.teamName}
           </div>
           )}
         </div>

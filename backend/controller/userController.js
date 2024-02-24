@@ -178,9 +178,9 @@ const joinedGames = async (req, res) => {
           game:true
         },
       });
-      const user = await prisma.user.findUnique({
+      const user = await prisma.users.findUnique({
       where: {
-        id: userId,
+        user_id: parseInt(userId),
       },
     });
 
